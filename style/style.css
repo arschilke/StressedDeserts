@@ -81,11 +81,6 @@ a:hover
 	width:40%;
 	font-size: 1em;
 	font-weight: 600;
-	/* position: absolute;
-	left: 5%;  */
-	/* -webkit-transform: translateX(-50%);
-	transform: translateX(-50%); */
-	/* font-size: 5em; */
 }
 
 .rightContent{
@@ -97,11 +92,6 @@ a:hover
     width:26%;
 	font-size: 1em;
 	font-weight: 600;
-	/* position: absolute;
-	left: 75%; */ 
-	/* -webkit-transform: translateX(-50%);
-	transform: translateX(-50%); */
-	/* font-size: 5em; */
 }
 
 .topangle {
@@ -132,4 +122,3 @@ a:hover
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
 }
-
