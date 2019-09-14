@@ -8,9 +8,30 @@ Gold-Dark: rgb(?,?,?)
 Gold-light: rgb(250,227,135)
 */
 
-
-
-
 body{
     background-color: rgb(240,240,240);
+    margin:0px;
+}
+
+#header{
+    height:20%;
+    background-color: rgb(200,200,200);
+    width:100%;
+    display: inline-block;
+}
+
+#header h1{
+    margin:0px;
+    font-size: 2em;
+    display:inline-block;
+}
+
+#header h2{
+    display: inline-block;
+    margin-left:7%;
+    margin-right:7%;
+}
+
+#header img{
+
 }
