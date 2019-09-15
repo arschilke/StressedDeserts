@@ -40,8 +40,8 @@ function changeGradient() {
     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
-function changeOpacity() {
-    heatmap.set('opacity', heatmap.get('opacity') ? null : 1);
+function changeDissipating() {
+    heatmap.set('dissipation', heatmap.get('dissipation') ? null : 10);
 }
 
 function changeRadius() {
