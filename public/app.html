@@ -1,0 +1,29 @@
+<!-- <!DOCTYPE html> -->
+<html>
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+   <title>Food Map</title>
+   <link rel="shortcut icon" href="images/favicon.ico" type="image/vnd.microsoft.icon">
+   <link rel="stylesheet" href="style/mapStyle.css" type="text/css">
+</head>
+
+<body>
+   <!-- <div class="sideBar">test</div> -->
+   <div class="secondBody">
+      <div id="floating-panel">
+         <button onclick="toggleHeatmap()">Toggle Heatmap</button>
+         <button onclick="changeGradient()">Change gradient</button>
+         <button onclick="changeRadius()">Change radius</button>
+         <button onclick="changeOpacity()">Change opacity</button>
+      </div>
+      <div id="map"></div>
+   </div>
+   <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXO2FQu10Ru7KANRnVLcCJsVCmH5L33fM&libraries=visualization&callback=initMap">
+   </script>
+</body>
+<script src="js/script.js"></script>
+
+</html>
