@@ -42,7 +42,7 @@ tableCount = 0
 townLinks = []
 dirtyTownTable = []
 #print(Statelinks)
-for url in Statelinks:#[0:2]
+for url in Statelinks[:2]:#[0:2]
     locations = []
     if url == "URL":
         master[0].append(['locations'])
@@ -90,6 +90,7 @@ intab = "\r\n\t{}"
 outtab = ""
 for url in townLinks:#[0:2]
     if url == "URL":
+        print("URL of town links to show progress: ",url)
         master[0].append(['locations'])
         continue
     else:
@@ -116,7 +117,8 @@ for url in townLinks:#[0:2]
             #print(b4seg)
             Seg = b4seg.split(":",1)
             #print(Seg)
-            iList[2] = Seg[1].strip()
+            clean = Seg[1].strip()
+            iList[2] = clean
             #print(iList[2])
         #print("ilist[i]",iList[i])
         kv = iList[i].split(":") # key value pairing
@@ -125,23 +127,30 @@ for url in townLinks:#[0:2]
             dict[kv[0].strip().replace('"',"").replace("'","")]=kv[1].strip().replace('"',"").replace("'","")   # cleans up all that tag stuff
         except IndexError:
             continue
-        dicts.append(dict)
-for dict in dicts:
+        #dicts.append(dict)
+#for dict in dicts:
     try:
         Address = dict["streetAddress"]+", "+dict["addressLocality"]+", "+dict["addressRegion"]
         #print(Address)
     except KeyError:
         print("dict: ",dict)
-    for val in dict:
-        print(val,"  ",dict[val])
-    print("KEYS: ",dict.keys())
+     #for val in dict:
+     #   print(val,"  ",dict[val])
+    #print("KEYS: ",dict.keys())
     geocode_result = gmaps.geocode(Address)
     # Geocoding an address
     lat = geocode_result[0]['geometry']['location']['lat']
     lng = geocode_result[0]['geometry']['location']['lng']
     line = [dict["name"], [lat, lng]]
-    lines.append(line)
-print(lines)
+    print(line)
+
+
+
+
+
+
+
+
 
 
 
