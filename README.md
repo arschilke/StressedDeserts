@@ -7,6 +7,8 @@ npm/node
 npm install
 node server.js
 
+**Note** If the Google map gives you a blue screen the refresh sometime too many request slows the api. We are processing over 35000 data points
+
 ## Inspiration
 During the HopHacks Hackathon, our team was considering the millions of families in the US who live in areas known as “food deserts”.
 
@@ -34,8 +36,3 @@ We would like to spend more time improving data relevance and quality. Although 
 
 ## Built With
 python, javascript, html, css, node.js, express.js, google-maps, google-geocoding, beautiful-soup ,domain.com
-
-
-### Note
-If the Google map gives you a blue screen the refresh
-sometime too many request slows the api. We are processing over 35000 data points
