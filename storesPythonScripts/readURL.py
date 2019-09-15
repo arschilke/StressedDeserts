@@ -59,9 +59,7 @@ print(len(master))
 
 gmaps = googlemaps.Client(key="AIzaSyCXO2FQu10Ru7KANRnVLcCJsVCmH5L33fM")
 
-with open('stores.csv', 'w') as writeFile:
-    writer = csv.writer(writeFile)
-
+csvLines = []
 for brand in master:
     for store in brand[4]:
         line = [brand[1]]
@@ -76,12 +74,13 @@ for brand in master:
             lat = geocode_result[0]['geometry']['location']['lat']
             lng = geocode_result[0]['geometry']['location']['lng']
             line.append([lat, lng])
-            writer.writerow(line)
+            csvLines.append(line)
         except IndexError:
             print(brand[1]+ " " + str(brand[4].index(store)))
 
 
-
-
+with open('stores.csv', 'w') as writeFile:
+    writer = csv.writer(writeFile)
+    writer.writerows(csvLines)
 
 writeFile.close()
