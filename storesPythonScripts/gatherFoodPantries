@@ -1,0 +1,295 @@
+# importing libs
+import requests
+import urllib.request
+import time
+import os
+from bs4 import BeautifulSoup
+
+def printList(thelist):
+    index= 0
+    for each in thelist:
+        print(index,": "+each)
+        index+=1
+def simplePrintList(l):
+    index= 0
+    for each in l:
+        print(each)
+        index+=1
+def space():
+    print("\n\n\n\n\n\n\n")
+def delArrows(theList):
+    print(theList)
+    i = 0
+    for each in theList:
+        og = str(theList[i])
+        newish = og.replace("<","")
+        new = og.replace(">","")
+        theList[i] = new
+    print(theList)
+
+
+soup = BeautifulSoup(open("C:\\Users\\vrdemo\\PycharmProjects\\foodbanks\Find Your Local Food Bank   Feeding America.html"), "html.parser")
+allDivs = soup.findAll("div")
+
+
+
+# dirtyResults[0] just some bs, not holding info about food banks
+dirtyResults=[]
+for results in soup.find_all('div', attrs = {'class':'results-box'}):
+
+    dirtyResults.append(results)
+del dirtyResults[0]
+cleanResults = dirtyResults
+
+
+
+numberedList = []
+parentNames = []
+parentLinks = []
+parentLoc = []
+#Creating the numbered list with error checking
+
+prenum = []
+
+li_split = []
+total =0
+for distro in cleanResults:
+    index= 0
+    li_split = str(distro).split('<li>')
+    prenum.append(li_split)
+    #print(prenum)
+    for each in li_split:
+        #print("\n\n-----Pair-----")
+        #print(index,": "+each)
+        li_split[index]= str(index)+" : "+ str(li_split[index])
+        numberedList.append(li_split[index])
+        pieces = li_split[index].split(" ")
+        if str(index) != str(pieces[0]):
+            print(index)
+            print(pieces[0])
+            os.system("pause")
+            print("Match Failed")
+        #print(li_split[index])
+        index+=1
+        total +=1
+#print(total)
+
+
+#Creating list of critical parent and child info
+
+
+childNames = []
+childLinks = []
+childLoc = []
+childPhones = []
+allText = []
+bowltext =[]
+
+for bank in numberedList:
+    formattedBank = bank.split(" ",1)
+    bowl = BeautifulSoup(bank,features="html.parser")
+    if int(formattedBank[0]) == 0:  # parent bank
+
+        #print("Parent")
+        #print(bank)
+
+
+        parentNames.append(bowl.find_all('p', attrs={'class':'name'}))
+        parentLinks.append(bowl.find_all('a', href = True))
+        parentLoc.append(bowl.findAll('p',attrs={'class': None}))
+
+    if int(formattedBank[0])>0:  # children bank
+        #print("FormattedBank: ",formattedBank)
+        childLinks.append(bowl.find_all('a', href = True))
+        bowltext.append(bowl.text)
+
+
+
+#Creating a list of clean child bank links
+
+
+for i in range(0,79):
+   # print("Line", i )
+    try:
+        whole  = childLinks[i] # throws random index exceptions
+    except IndexError:
+        print("*****"+str(i))
+    before = BeautifulSoup(str(whole),features="html.parser")
+    #print(before)
+    target = before.findAll('a')
+    #print(target)
+    #print(type(target))
+    t2 = BeautifulSoup(str(target),features="html.parser")
+    #print(t2.next_sibling)
+    for a in t2.find_all('a', href=True):
+       # print( "Found the URL:", a['href'])
+        try:
+            childLinks[i] = a['href']
+        except IndexError:
+            print("**later***"+str(i))
+
+childLinks = list(filter(None,childLinks))
+
+
+
+
+
+print(childLinks)
+#print(len(childLinks))
+for i in range(0,78):
+
+    print("Pre /",bowltext[i])
+    if bowltext[i].endswith("/"):
+        bowltext[i] = bowltext[i][0:int(len(bowltext[i]))-1]
+    print("Post /",bowltext[i])
+    linkSize = len(bowltext[i])-len(childLinks[i])
+    linkSize = int(linkSize)
+    print(bowltext[i][0:linkSize+1])
+
+    linkSize = len(childLinks[i])
+    linkSize = int(linkSize)
+    print("ChildLink: ",childLinks[i],"",linkSize)
+    if i == 8:
+         print("Without Link: ",i," ",bowltext[i])
+
+    else:
+        bowltext[i] = bowltext[i][0:len(bowltext[i])-(linkSize-1)]
+        print("Without Link: ",i," ",bowltext[i])
+
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+#Creating list of clean parent links
+
+for i in range(0,200):
+   # print("Line", i )
+    try:
+        whole  = parentLinks[i] # throws random index exceptions
+    except IndexError:
+        print("*****"+str(i))
+    before = BeautifulSoup(str(whole),features="html.parser")
+    #print(before)
+    target = before.findAll('a')[1]
+    #print(target)
+    #print(type(target))
+    t2 = BeautifulSoup(str(target),features="html.parser")
+    #print(t2.next_sibling)
+    for a in t2.find_all('a', href=True):
+       # print( "Found the URL:", a['href'])
+        try:
+            parentLinks[i] = a['href']
+        except IndexError:
+            print("**later***"+str(i))
+
+       # print(parentLinks[i])
+
+
+
+
+
+
+#print(parentLinks)
+#print(parentNames)
+
+
+
+#Creates a clean list of food bank names
+for i in range(0,200):
+   # print("Line", i )
+    try:
+        whole  = parentNames[i] # throws random index exceptions
+    except IndexError:
+        print("*****"+str(i))
+    before = BeautifulSoup(str(whole),features="html.parser")
+    #print(before)
+    target = before.findAll('p')
+    t2 = BeautifulSoup(str(target),features="html.parser")
+
+    parentNames[i] = (str(t2.text).replace("[", "").replace("]",""))
+
+#simplePrintList(parentNames)
+#print(len(parentNames))
+
+
+
+
+#Gets Phones and cleans locations
+parentPhones = []
+for i in range(0,200):
+   # print("Line", i )
+    try:
+        whole  = parentLoc[i] # throws random index exceptions
+    except IndexError:
+        print("*****"+str(i))
+    before = BeautifulSoup(str(whole),features="html.parser")
+    #print(before)
+    target = before.findAll('p')
+    print("TARGET",target)
+
+    t2 = BeautifulSoup(str(target),features="html.parser")
+    
+
+    parentLoc[i] = (str(t2.text).replace("[" , " ").replace("]" , " "))
+    phoneNumber = parentLoc[i][-12:]
+    phoneNumber = phoneNumber.replace("." , "-")
+    parentPhones.append(phoneNumber)
+    parentLoc[i] = parentLoc[i][0:len(parentLoc[i])-12]
+
+
+
+
+
+
+
+#print(parentLoc)
+#print(len(parentLoc))
+'''
+print("--------after--------")
+
+simplePrintList(parentPhones)
+print(len(parentPhones))
+print(parentPhones)
+
+#simplePrintList(parentLoc)
+'''
+entire = []
+for i in range(0,200):
+    # parentLoc
+    ##parentLinks
+    #parentNames
+    #parentPhones
+    entire.append([parentLoc[i],parentLinks[i],parentNames[i],
+                   parentPhones[i]])
+#simplePrintList(entire)
+
+simplePrintList(entire)
+
+#simplePrintList(parentLoc)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
