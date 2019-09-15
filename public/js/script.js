@@ -1,12 +1,86 @@
 var map, heatmap;
 
-// var foodDonate = [
-//     ['Bondi Beach', 45.76993, -109.20466, "google.com"],
-//     ['Coogee Beach', 27.192223, -80.2430572, "google.com"],
-//     ['Cronulla Beach', 40.56000, -74.290001, "google.com"],
-//     ['Manly Beach', 39.554443, -119.7355587, "google.com"],
-//     ['Maroubra Beach', 32.349998, -95.300003, "google.com"]
-// ];
+//Inilitalize the map
+function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 10,
+        center: {
+            lat: 39.3143089,
+            lng: -76.6278573
+        },
+        mapTypeId: 'satellite',
+    });
+
+
+    //Get the data from grocery stores as a heat map
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: getPoints(),
+        map: map
+    });
+
+    heatmap.setOptions({
+        dissipating: true,
+        maxIntensity: 10,
+        radius: 10,
+        opacity: 0.9,
+
+    });
+
+    setMarkers(map);
+}
+
+function setMarkers(map) {
+    for (var i = 0; i < foodDonate.length; i++) {
+        var foodShop = foodDonate[i];
+
+        var marker = new google.maps.Marker({
+            position: {
+                lat: foodShop[2],
+                lng: foodShop[3]
+            },
+            map: map,
+            title: foodShop[1]
+        });
+        console.log(foodShop[0]);
+        addInfoWindow(marker, foodShop[0]);
+    }
+}
+
+function addInfoWindow(marker, message) {
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: message
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
+    });
+}
+
+function toggleHeatmap() {
+    heatmap.setMap(heatmap.getMap() ? null : map);
+}
+
+// Heatmap functions
+function changeGradient() {
+    var gradient = [
+        'rgba(0, 255, 255, 0)',
+        'rgba(0, 255, 255, 1)',
+        'rgba(0, 191, 255, 1)',
+        'rgba(0, 127, 255, 1)',
+        'rgba(0, 63, 255, 1)',
+        'rgba(0, 0, 255, 1)',
+        'rgba(0, 0, 223, 1)',
+        'rgba(0, 0, 191, 1)',
+        'rgba(0, 0, 159, 1)',
+        'rgba(0, 0, 127, 1)',
+        'rgba(63, 0, 91, 1)',
+        'rgba(127, 0, 63, 1)',
+        'rgba(191, 0, 31, 1)',
+        'rgba(255, 0, 0, 1)'
+    ]
+    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
+}
 
 var foodDonate = [[" 'https://www.foodbankofalaska.org/'", " 'Food Bank of Alaska Inc.'", 61.2231564, -149.8411223],
 [" 'https://www.feedingal.org/'", " 'Community Food Bank of Central Alabama'", 33.473857, -86.837611],
@@ -208,89 +282,6 @@ var foodDonate = [[" 'https://www.foodbankofalaska.org/'", " 'Food Bank of Alask
 [" 'https://www.feedingamericawi.org/'", " 'Feeding America Eastern Wisconsin'", 43.0574893, -87.9333271],
 [" 'https://www.mountaineerfoodbank.org/'", " 'Mountaineer Food Bank'", 38.6613792, -80.7394066],
 [" 'https://facinghunger.org/'", " 'Facing Hunger Foodbank'", 38.4176896, -82.4348952]];
-
-//Inilitalize the map
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 10,
-        center: {
-            lat: 39.3143089,
-            lng: -76.6278573
-        },
-        mapTypeId: 'satellite',
-    });
-
-
-    //Get the data from grocery stores as a heat map
-    heatmap = new google.maps.visualization.HeatmapLayer({
-        data: getPoints(),
-        map: map
-    });
-
-    heatmap.setOptions({
-        dissipating: true,
-        maxIntensity: 10,
-        radius: 10,
-        opacity: 0.9,
-
-    });
-
-    setMarkers(map);
-}
-
-function setMarkers(map) {
-    for (var i = 0; i < foodDonate.length; i++) {
-        var foodShop = foodDonate[i];
-
-        var marker = new google.maps.Marker({
-            position: {
-                lat: foodShop[2],
-                lng: foodShop[3]
-            },
-            map: map,
-            title: foodShop[1]
-        });
-        console.log(foodShop[0]);
-        addInfoWindow(marker, foodShop[0]);
-    }
-}
-
-function addInfoWindow(marker, message) {
-
-    var infoWindow = new google.maps.InfoWindow({
-        content: message
-    });
-
-    google.maps.event.addListener(marker, 'click', function () {
-        infoWindow.open(map, marker);
-    });
-}
-
-function toggleHeatmap() {
-    heatmap.setMap(heatmap.getMap() ? null : map);
-}
-
-// Heatmap functions
-function changeGradient() {
-    var gradient = [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
-    ]
-    heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
-}
-
 
 // Heatmap data: 500 Points
 function getPoints() {
