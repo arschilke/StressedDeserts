@@ -1,18 +1,67 @@
 var map, heatmap;
 
+var foodDonate = [
+    ['Bondi Beach', 45.76993, -109.20466, "google.com"],
+    ['Coogee Beach', 27.192223, -80.2430572, "google.com"],
+    ['Cronulla Beach', 40.56000, -74.290001, "google.com"],
+    ['Manly Beach', 39.554443, -119.7355587, "google.com"],
+    ['Maroubra Beach', 32.349998, -95.300003, "google.com"]
+];
+
+//Inilitalize the map
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 13,
+        zoom: 10,
         center: {
             lat: 39.3143089,
             lng: -76.6278573
         },
-        mapTypeId: 'satellite'
+        mapTypeId: 'satellite',
     });
 
+
+    //Get the data from grocery stores as a heat map
     heatmap = new google.maps.visualization.HeatmapLayer({
         data: getPoints(),
         map: map
+    });
+
+    heatmap.setOptions({
+        dissipating: true,
+        maxIntensity: 10,
+        radius: 10,
+        opacity: 0.9,
+
+    });
+
+    setMarkers(map);
+}
+
+function setMarkers(map) {
+    for (var i = 0; i < foodDonate.length; i++) {
+        var foodShop = foodDonate[i];
+
+        var marker = new google.maps.Marker({
+            position: {
+                lat: foodShop[1],
+                lng: foodShop[2]
+            },
+            map: map,
+            title: foodShop[0]
+        });
+        console.log(foodShop[3]);
+        addInfoWindow(marker, foodShop[3]);
+    }
+}
+
+function addInfoWindow(marker, message) {
+
+    var infoWindow = new google.maps.InfoWindow({
+        content: message
+    });
+
+    google.maps.event.addListener(marker, 'click', function () {
+        infoWindow.open(map, marker);
     });
 }
 
@@ -20,6 +69,7 @@ function toggleHeatmap() {
     heatmap.setMap(heatmap.getMap() ? null : map);
 }
 
+// Heatmap functions
 function changeGradient() {
     var gradient = [
         'rgba(0, 255, 255, 0)',
@@ -40,17 +90,6 @@ function changeGradient() {
     heatmap.set('gradient', heatmap.get('gradient') ? null : gradient);
 }
 
-function changeDissipating() {
-    heatmap.set('dissipation', heatmap.get('dissipation') ? null : 10);
-}
-
-function changeRadius() {
-    heatmap.set('radius', heatmap.get('radius') ? null : 20);
-}
-
-function changeOpacity() {
-    heatmap.set('opacity', heatmap.get('opacity') ? null : 1);
-}
 
 // Heatmap data: 500 Points
 function getPoints() {
