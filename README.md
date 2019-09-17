@@ -5,6 +5,7 @@ npm/node
 
 ## How to run: 
 npm install
+
 node server.js
 
 **Note** If the Google map gives you a blue screen then refresh the page. Sometimes too many requests slow the api and processing process. We are processing ~25000 data points.
