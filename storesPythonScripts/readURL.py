@@ -57,7 +57,7 @@ for x in master:
 print(sum(arr))
 print(len(master))
 
-gmaps = googlemaps.Client(key="AIzaSyCXO2FQu10Ru7KANRnVLcCJsVCmH5L33fM")
+gmaps = googlemaps.Client(key="INSERT KEY HERE")
 
 csvLines = []
 for brand in master:
